@@ -1,8 +1,8 @@
 <?php
   
-  //関数化 & MVC2モデルで
-  //POST送信が行われたら、下記の処理を実行
-  //テストコメント
+  if (empty($_SESSION) || !isset($_SESSION['username']) {
+    header('Location: index.php');
+  }
   //データベースに接続
   require ('dbconnect.php');
   if(!empty($_POST) && isset($_POST['nickname']) && isset($_POST['comment'])) {
@@ -10,7 +10,6 @@
     $comment = htmlspecialchars($_POST['comment']);
     if ($nickname == true && $comment == true) {
       $sql = 'insert into posts (nickname, comment, created) values (?, ?, now())';
-      // $sql = sprintf('insert into posts (nickname, comment, created) values (\'%s\',\'%s\',now())', $nickname, $comment);
       $stmt = $dbh -> prepare($sql);
       $stmt -> execute(array($nickname, $comment));
     }
