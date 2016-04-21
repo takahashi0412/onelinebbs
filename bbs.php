@@ -1,8 +1,10 @@
 <?php
-  
-  if (empty($_SESSION) || !isset($_SESSION['username']) {
-    header('Location: index.php');
+
+  session_start();
+  if (empty($_SESSION) || !isset($_SESSION['accountname'])) {
+    header('Location: ./index.php');
   }
+  $accountname = $_SESSION['accountname'];
   //データベースに接続
   require ('dbconnect.php');
   if(!empty($_POST) && isset($_POST['nickname']) && isset($_POST['comment'])) {
@@ -85,7 +87,7 @@
       </div>
       <!-- /.container-fluid -->
   </nav>
-
+  <h3><?php $accountname ?>さんようこそ！</h3>
   <div class="container">
     <div class="row">
       <div class="col-md-4 content-margin-top">
