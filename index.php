@@ -1,14 +1,15 @@
 <?php
 	require('./dbconnect.php');
+	$rec = false;
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$accountname = htmlspecialchars($_POST['accountname']);
 		$password = htmlspecialchars($_POST['pass']);
 		if (isset($_POST) && ($accountname == true || $password == true)) {
-			$sql = 'select * from accounts where accountname = ? and password = ? and available';
+			$sql = "select * from accounts where accountname = ? and password = sha2(?, '256') and available";
 			$stmt = $dbh -> prepare($sql);
 			$stmt -> execute(array($accountname, $password));
 			$rec = $stmt -> fetch(PDO::FETCH_ASSOC);
-			if ($accountname === $rec['accountname'] && $password === $rec['password']) {
+			if ($rec) {
 				session_start();
 				$_SESSION['accountname'] = $accountname;
 				// この処理の前に出力処理を行うとページ遷移ができないので、注意.
@@ -16,11 +17,12 @@
 				exit();
 			}
 		}
-	} else {
-		session_destroy();
 	}
 	if ($dbh) {
 		$dbh = null;
+	}
+	if (isset($_SESSION) && $_SESSION['accountname']) {
+		$_SESSION['accountname'] = null;
 	}
 ?>
 <!DOCTYPE>
@@ -36,10 +38,7 @@
 	            <div class="avatar"></div>
 	            <div class="form-box">
 	            <?php
-	            	echo "<p>$rec['accountname']</p>";
-	            	echo $accountname; 
-	            	echo $password; 
-		            if (isset($_POST) && !($accountname === $rec['accountname'] && $password === $rec['password'])) {
+		            if (isset($_POST) && $rec) {
 		            		echo '<p>アカウント名またはパスワードが正しくありません。再入力してください。</p>';
 		            }
 	            ?>
