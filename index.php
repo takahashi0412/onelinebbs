@@ -1,7 +1,25 @@
 <?php
+	if (!empty($_POST) && isset($_POST['logout'])) {
+		session_start();
+		// セッション変数を全て解除する
+		$_SESSION = array();
+		// セッションを切断するにはセッションクッキーも削除する。
+		// Note: セッション情報だけでなくセッションを破壊する。
+		if (ini_get("session.use_cookies")) {
+		    $params = session_get_cookie_params();
+		    setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
+
+			// 最終的に、セッションを破壊する
+			session_destroy();
+		}
+	}
+    if (!empty($_SESSION) || isset($_SESSION['accountname'])) {
+      header('Location: ./bbs.php');
+    }
+	
 	require('./dbconnect.php');
 	$rec = false;
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	if (isset($_POST['accountname']) && isset($_POST['pass']) && $_SERVER["REQUEST_METHOD"] == "POST") {
 		$accountname = htmlspecialchars($_POST['accountname']);
 		$password = htmlspecialchars($_POST['pass']);
 		if (isset($_POST) && ($accountname == true || $password == true)) {
@@ -21,9 +39,6 @@
 	if ($dbh) {
 		$dbh = null;
 	}
-	if (isset($_SESSION) && $_SESSION['accountname']) {
-		$_SESSION['accountname'] = null;
-	}
 ?>
 <!DOCTYPE>
 <html lang="ja">
@@ -42,6 +57,7 @@
 		            		echo '<p>アカウント名またはパスワードが正しくありません。再入力してください。</p>';
 		            }
 	            ?>
+	            	<p>id:toshi&nbsp;pw:toshishi</p>
 	                <form method="post">
 	                    <input name="accountname" type="text" placeholder="アカウント名">
 	                    <input name="pass" type="password" placeholder="パスワード">

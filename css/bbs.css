@@ -3,3 +3,12 @@
 	right: 10px;
 	bottom: 10px;
 }
+
+.logout {
+	float: right;
+	margin-top: 15px;
+}
+
+.clear {
+	clear: both;
+}

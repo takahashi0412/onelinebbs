@@ -82,27 +82,22 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#page-top"><span class="strong-title"><i class="fa fa-linux"></i> Oneline bbs <?php echo $_SESSION['accountname']; ?></span></a>
+                <a class="navbar-brand" href="#page-top">
+                  <span class="strong-title">
+                    <i class="fa fa-linux"></i>Oneline bbs <?php if (!empty($_SESSION) && isset($_SESSION['accountname'])) { echo $_SESSION['accountname']; } ?>
+                  </span>
+                </a>
             </div>
+            <div class="logout">
+                  <form method="post" action="./index.php">
+                    <button type="submit" name="logout" >ログアウト</button>
+                  </form>
+                </div>
+                <div class="clear"></div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-  <!--                   <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#portfolio">Portfolio</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#about">About</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#contact">Contact</a>
-                    </li> -->
                 </ul>
-            </div>
-            <div>
-              <!-- <button type="button" value="ログアウト" onclick="./index.php" /> -->
             </div>
             <!-- /.navbar-collapse -->
         </div>
